@@ -3,18 +3,25 @@ import { useState } from 'nago-react';
 
 function shuffleArray(array: any[]) {
 	for (let i = array.length - 1; i > 0; i--) {
-	  const j = Math.floor(Math.random() * (i + 1));
-	  [array[i], array[j]] = [array[j], array[i]];
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
 	}
 	return array;
-  }
+}
 
 function App() {
 	const [count, setCount] = useState(0);
 	const [open, setOpen] = useState(false);
 
+	const items = Array.from({ length: 3 }, (_, index) => (
+		<InnerCounter key={index} />
+	));
+
+	const [components, setComponents] = useState(items);
+
 	const handle = () => setCount((prev) => prev + 1);
 	const handleModal = () => setOpen((prev) => !prev);
+	const shuffleComponent = () => setComponents((prev) => shuffleArray(prev));
 
 	return (
 		<div className='test-app-container'>
@@ -25,7 +32,10 @@ function App() {
 			<button className='app-button secondary' onclick={handleModal}>
 				모달 토글 버튼
 			</button>
-			<InnerCounter />
+			<button className='app-button secondary' onclick={shuffleComponent}>
+				컴포넌트 섞기 버튼
+			</button>
+			{...components}
 			{open && <Modal onClose={handleModal} />}
 		</div>
 	);
