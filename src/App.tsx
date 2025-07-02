@@ -12,16 +12,11 @@ function shuffleArray(array: any[]) {
 function App() {
 	const [count, setCount] = useState(0);
 	const [open, setOpen] = useState(false);
-
-	const items = Array.from({ length: 3 }, (_, index) => (
-		<InnerCounter key={index} />
-	));
-
-	const [components, setComponents] = useState(items);
+	const [isReverse, setIsReverse] = useState(false);
 
 	const handle = () => setCount((prev) => prev + 1);
 	const handleModal = () => setOpen((prev) => !prev);
-	const shuffleComponent = () => setComponents((prev) => shuffleArray(prev));
+	const handleReverse = () => setIsReverse((prev) => !prev);
 
 	return (
 		<div className='test-app-container'>
@@ -32,10 +27,20 @@ function App() {
 			<button className='app-button secondary' onclick={handleModal}>
 				모달 토글 버튼
 			</button>
-			<button className='app-button secondary' onclick={shuffleComponent}>
+			<button className='app-button secondary' onclick={handleReverse}>
 				컴포넌트 섞기 버튼
 			</button>
-			{...components}
+			{isReverse ? (
+				<>
+					<InnerCounter key={'first'} />
+					<InnerCounter key={'second'} />
+				</>
+			) : (
+				<>
+					<InnerCounter key={'second'} />
+					<InnerCounter key={'first'} />
+				</>
+			)}
 			{open && <Modal onClose={handleModal} />}
 		</div>
 	);
